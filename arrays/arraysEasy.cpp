@@ -93,7 +93,7 @@ int removeDuplicates(int *a, int n){
     }
     return i+1;
 }
-
+//oa
 //Left Rotate the Array by One
 //BFA->create another array and move by one place
 //OA
