@@ -146,8 +146,22 @@ int majorityElementOA(int *a, int n){
     }
     return -1;
 }
+//maximum subarray sum
+int maximumSubarraySumBFA(int *a, int n){
+    int maxi = INT_MIN;
+    for(int i = 0; i < n; i++){
+        for(int j = i; j < n; j++){
+            int sum = 0;
+            for(int k = i; k <= j; k++){
+                sum = sum + a[j];
+                maxi = max(sum, maxi);
+            }
+        }
+    }
+    return maxi;
+}
 
-int maximumSubarraySumBFA(int* a, int n, int target){
+int maximumSubarraySumBA(int* a, int n){
     int maxi = INT_MIN;
     for(int i = 0; i < n; i++){
         int sum = 0;
@@ -157,4 +171,114 @@ int maximumSubarraySumBFA(int* a, int n, int target){
         }
     }
     return maxi;
+}
+//Kadane's Algorithm
+int maximumSubarraySumOA(int *a, int n){
+    int sum = 0;
+    int maxi = INT_MIN;
+    for(int i = 0; i < n; i++){
+        sum = sum + a[i];
+        if(sum<0){
+            sum = 0;
+        }
+        if(sum>maxi){
+            maxi = sum;
+        }
+    }
+    if(maxi<0) maxi = 0;
+    return maxi;
+}
+//varient 2
+void maximumSubarraySumVarientOA(int *a, int n){
+    int sum = 0;
+    int maxi = INT_MIN;
+    int start = 0;
+    int ansStart = -1;
+    int ansEnd = -1;
+    for(int i = 0; i < n; i++){
+        if(sum==0) start = i;
+        sum = sum + a[i];
+        if(sum<0){
+            sum = 0;
+        }
+        if(sum>maxi){
+            maxi = sum;
+            ansStart = start;
+            ansEnd = i;
+        }
+    }
+    for(int i = ansStart; i < ansEnd; i++){
+        cout << a[i] <<" ";
+    }
+}
+//Rearrange the array in alternating positive and negative items
+vector<int> rearragePosNegBFA(vector<int> a, int n){
+    vector<int> pos(n/2);
+    vector<int> neg(n/2);
+    for(int i = 0; i < n; i++){
+        if(a[i] > 0){
+            pos.push_back(a[i]);
+        }
+        else{
+            neg.push_back(a[i]);
+        }
+    }
+    for(int i = 0; i < n/2; i++){
+        a[2*i] = pos[i];
+        a[2*i+1] = neg[i];
+    }
+    return a;
+}
+
+vector<int> rearragePosNegOA(vector<int> a, int n){
+    vector<int> ans(n);
+    int pos = 0;
+    int neg = 1;
+    for(int i = 0; i < n; i++){
+        if(a[i]>0){
+            ans[pos] = a[i];
+            pos = pos+2;
+        }
+        else{
+            ans[neg] = a[i];
+            neg = neg + 2;
+        }
+    }
+    return ans;
+}
+//Next Permutation
+void func(int idx, vector<int>& a, vector<vector<int>>& result){
+    if(a.size()==idx){
+        result.push_back(a);
+        return;
+    }
+    for(int i = 0 ; i < a.size(); i++){
+        swap(a[idx], a[i]);
+        func(idx+1, a, result);
+        swap(a[idx], a[i]);
+    }
+}
+vector<vector<int>> permutate(vector<int> a, int n){
+    vector<vector<int>> result(n);
+    func(0, a, result);
+    return result;
+}
+
+//Leaders in an array
+vector<int> leaders(vector<int> a){
+    int n = a.size();
+    vector<int> ans;
+    for(int i = 0; i < n; i++){
+        int leader = true;
+        for(int j = i + 1; j < n; j++){
+            if(a[j] > a[i]){
+                leader = false;
+                break;
+            }
+        }
+        if(leader){
+            ans.push_back(a[i]);
+        }
+    }
+    return ans;
 }
