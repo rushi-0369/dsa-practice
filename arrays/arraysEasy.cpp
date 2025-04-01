@@ -45,7 +45,7 @@ int findSecondLargestElementOA(int *a, int n){
             slargest = largest;
             largest = a[i];
         }
-        else if(a[i] < largest && a[i] > slargest){
+        else if(a[i] != largest && a[i] > slargest){
             slargest = a[i];
         }
     }
@@ -289,17 +289,14 @@ int findMaximumConsecutiveOnes(int *a, int n){
         if(a[i]==1){
             count++;
             if(count > maxi){
-                count = maxi;
-            }
-            else{
-                maxi = maxi;
+                maxi = count;
             }
         }
         else{
             count = 0;
         }
     }
-    return count;
+    return maxi;
 }
 
 //number that appears once, and other numbers twice.
