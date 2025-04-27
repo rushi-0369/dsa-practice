@@ -1,28 +1,23 @@
 #include <bits/stdc++.h>
 using namespace std;
 //BFA->can be used for both varients
-int* twoSumBFA(int* a, int n, int target){
-    int* result = (int*)malloc(2 * sizeof(int));
+vector<int> twoSumBFA(vector<int>& a, int n, int target){
+    vector<int> result;
     for(int i = 0; i < n; i++){
         for(int j = i+1; j < n; j++){
             if(a[i]+a[j]==target){
-                result[1] = j;
-                result[0] = i;
+                result.push_back(i);
+                result.push_back(j);
                 return result;
             }
         }
     }
-    result[0] = -1;
-    result[1] = -1;
-    return result;
+    return {-1, -1};
 }
 //BA->hashmap X
-int comp(const void *a, const void *b) {
-    return (*(int *)a - *(int *)b);
-}
 //OA->only for varient which return true, false
-int twoSumOA(int *a, int n, int target){
-    qsort(a, n, sizeof(a[0]), comp);
+int twoSumOA(vector<int>& a, int n, int target){
+    sort(a.begin(), a.end());
     int left = 0;
     int right = n-1;
     while(left<right){
@@ -42,7 +37,7 @@ int twoSumOA(int *a, int n, int target){
 //Sort an array of 0's, 1's and 2's
 //BFA->sort tc=>nlogn sc=>n
 //BA
-void sortArrayBA(int *a, int n){
+void sortArrayBA(vector<int>& a, int n){
     int cnt0 = 0, cnt1 = 0, cnt2 = 0;
     for(int i = 0; i < n; i++){
         if(a[i]==0){
@@ -67,7 +62,7 @@ void sortArrayBA(int *a, int n){
 }
 
 //OA->Dutch Nationalflag algorithm
-void sortArrayOA(int *a, int n){
+void sortArrayOA(vector<int>& a, int n){
     int low = 0;
     int mid = 0;
     int high = n-1;
@@ -92,7 +87,7 @@ void sortArrayOA(int *a, int n){
 }
 //TC=>n sc=>1
 //Majority element(>n/2 times)
-int majorityElementBFA(int* a, int n){
+int majorityElementBFA(vector<int>& a, int n){
     int cnt = 0;
     for(int i = 0; i < n;i++){
         for(int j = 0;j < n;j++){
@@ -107,7 +102,7 @@ int majorityElementBFA(int* a, int n){
     return -1;
 }
 //using map
-int majorityElementBA(int *a, int n){
+int majorityElementBA(vector<int>& a, int n){
     map<int, int> mpp;
     for(int i = 0; i < n;i++){
         mpp[a[i]]++;
@@ -120,7 +115,7 @@ int majorityElementBA(int *a, int n){
     return -1;
 }
 //OA->Moore's Voting Algorithm
-int majorityElementOA(int *a, int n){
+int majorityElementOA(vector<int>& a, int n){
     int cnt = 0;
     int el;
     for(int i = 0; i < n; i++){
@@ -147,13 +142,13 @@ int majorityElementOA(int *a, int n){
     return -1;
 }
 //maximum subarray sum
-int maximumSubarraySumBFA(int *a, int n){
+int maximumSubarraySumBFA(vector<int>& a, int n){
     int maxi = INT_MIN;
     for(int i = 0; i < n; i++){
         for(int j = i; j < n; j++){
             int sum = 0;
             for(int k = i; k <= j; k++){
-                sum = sum + a[j];
+                sum = sum + a[k];
                 maxi = max(sum, maxi);
             }
         }
@@ -161,7 +156,7 @@ int maximumSubarraySumBFA(int *a, int n){
     return maxi;
 }
 
-int maximumSubarraySumBA(int* a, int n){
+int maximumSubarraySumBA(vector<int>& a, int n){
     int maxi = INT_MIN;
     for(int i = 0; i < n; i++){
         int sum = 0;
@@ -173,7 +168,7 @@ int maximumSubarraySumBA(int* a, int n){
     return maxi;
 }
 //Kadane's Algorithm
-int maximumSubarraySumOA(int *a, int n){
+int maximumSubarraySumOA(vector<int>& a, int n){
     int sum = 0;
     int maxi = INT_MIN;
     for(int i = 0; i < n; i++){
@@ -189,7 +184,7 @@ int maximumSubarraySumOA(int *a, int n){
     return maxi;
 }
 //varient 2
-void maximumSubarraySumVarientOA(int *a, int n){
+void maximumSubarraySumVarientOA(vector<int>& a, int n){
     int sum = 0;
     int maxi = INT_MIN;
     int start = 0;
@@ -212,7 +207,7 @@ void maximumSubarraySumVarientOA(int *a, int n){
     }
 }
 //Rearrange the array in alternating positive and negative items
-vector<int> rearragePosNegBFA(vector<int> a, int n){
+vector<int> rearragePosNegBFA(vector<int>& a, int n){
     vector<int> pos(n/2);
     vector<int> neg(n/2);
     for(int i = 0; i < n; i++){
@@ -230,7 +225,7 @@ vector<int> rearragePosNegBFA(vector<int> a, int n){
     return a;
 }
 
-vector<int> rearragePosNegOA(vector<int> a, int n){
+vector<int> rearragePosNegOA(vector<int>& a, int n){
     vector<int> ans(n);
     int pos = 0;
     int neg = 1;
@@ -246,26 +241,8 @@ vector<int> rearragePosNegOA(vector<int> a, int n){
     }
     return ans;
 }
-//Next Permutation
-void func(int idx, vector<int>& a, vector<vector<int>>& result){
-    if(a.size()==idx){
-        result.push_back(a);
-        return;
-    }
-    for(int i = 0 ; i < a.size(); i++){
-        swap(a[idx], a[i]);
-        func(idx+1, a, result);
-        swap(a[idx], a[i]);
-    }
-}
-vector<vector<int>> permutate(vector<int> a, int n){
-    vector<vector<int>> result(n);
-    func(0, a, result);
-    return result;
-}
-
 //Leaders in an array
-vector<int> leaders(vector<int> a){
+vector<int> leadersBFA(vector<int>& a){
     int n = a.size();
     vector<int> ans;
     for(int i = 0; i < n; i++){
@@ -276,9 +253,56 @@ vector<int> leaders(vector<int> a){
                 break;
             }
         }
-        if(leader){
+        if(leader==true){
             ans.push_back(a[i]);
         }
     }
     return ans;
+}
+
+vector<int> leadersOA(vector<int>& a){
+    int n = a.size();
+    int maxi = INT_MIN;
+    vector<int> ans;
+    for(int i = n-1; i > 0; i--){
+        if(a[i]>maxi){
+            ans.push_back(a[i]);
+        }
+        maxi = max(a[i], maxi);
+    }
+    return ans;
+}
+
+//Container with Most Water
+int maxAreaBFA(vector<int>& height) {
+    int n = height.size();
+    int maxWater = 0;
+    for(int i = 0; i < n; i++){
+        for(int j = i+1; j < n; j++){
+            int w = j - i;
+            int ht = min(height[i], height[j]);
+            int area = w*ht;
+            maxWater = max(area,maxWater);
+        }
+    }
+    return maxWater;
+}
+
+int maxAreaOA(vector<int>& height){
+    int lp = 0;
+    int rp = height.size() - 1;
+    int maxWater = 0;
+    while(lp < rp){
+        int w = rp - lp;
+        int ht = min(height[lp], height[rp]);
+        int area = w*ht;
+        maxWater = max(area,maxWater);
+        if(height[lp] < height[rp]){
+            lp++;
+        }
+        else{
+            rp--;
+        }
+    }
+    return maxWater;
 }

@@ -2,7 +2,7 @@
 using namespace std;
 //Largest element
 //BFA->sort and arr[n-1]
-int findLargestElement(int *a, int n){
+int findLargestElement(vector <int>&a, int n){
     int max = a[0];
     for(int i = 1; i < n; i++){
         if(max < a[i]){
@@ -14,7 +14,8 @@ int findLargestElement(int *a, int n){
 
 // second Largest
 //BFA->sort
-int findSecondLargestElementBFA(int *a, int n){
+int findSecondLargestElementBFA(vector <int>&a, int n){
+    sort(a.begin(), a.end());
     int largest = findLargestElement(a,n);
     int secondLargest = -1;
     for(int i = n-2; i >= 0; i++){
@@ -26,7 +27,7 @@ int findSecondLargestElementBFA(int *a, int n){
     return secondLargest;
 }
 //BA
-int findSecondLargestElementBA(int *a, int n){
+int findSecondLargestElementBA(vector <int>&a, int n){
     int largest = findLargestElement(a,n);
     int slargest = -1;
     for(int i = 0; i < n; i++){
@@ -37,7 +38,7 @@ int findSecondLargestElementBA(int *a, int n){
     return slargest;
 }
 //OA
-int findSecondLargestElementOA(int *a, int n){
+int findSecondLargestElementOA(vector <int>&a, int n){
     int largest = a[0];
     int slargest = -1;
     for(int i = 1; i < n; i++){
@@ -51,7 +52,7 @@ int findSecondLargestElementOA(int *a, int n){
     }
     return slargest;
 }
-int findSecondSmallestElementOA(int *a, int n){
+int findSecondSmallestElementOA(vector <int>&a, int n){
     int smallest = a[0];
     int ssmallest = __INT_MAX__;
     for(int i = 1; i < n; i++){
@@ -68,7 +69,7 @@ int findSecondSmallestElementOA(int *a, int n){
 
 //check is an array is sorted
 //OA
-int isSortedOA(int *a, int n){
+int isSortedOA(vector <int>&a, int n){
     for(int i = 1; i < n; i++){
         if(a[i] >= a[i-1]){
 
@@ -83,7 +84,7 @@ int isSortedOA(int *a, int n){
 //remove duplicates from and array and return no.of non duplicate elements
 //BFA-> set data structure set.insert, set.size
 //OA
-int removeDuplicates(int *a, int n){
+int removeDuplicates(vector <int>&a, int n){
     int i = 0;
     for(int j = 1; j < n; j++){
         if(a[i] != a[j]){
@@ -97,7 +98,7 @@ int removeDuplicates(int *a, int n){
 //Left Rotate the Array by One
 //BFA->create another array and move by one place
 //OA
-int leftRotateByOne(int *a, int n){
+int leftRotateByOne(vector <int>&a, int n){
     int temp = a[0];
     for(int i = 1; i < n-1; i++){
        a[i-1] = a[i];
@@ -107,7 +108,7 @@ int leftRotateByOne(int *a, int n){
 
 //Rotate array by d elements
 //BFA
-int leftRotateByd(int *a, int n, int d){
+int leftRotateByd(vector <int>&a, int n, int d){
     if(n==0) return;
     d = d % n;
     if(d>n) return;
@@ -127,7 +128,7 @@ int leftRotateByd(int *a, int n, int d){
         a[i] = temp[i-(n-d)];
     }
 }
-int rightRotateByd(int *a, int n, int d){
+int rightRotateByd(vector <int>&a, int n, int d){
     if(n==0) return;
     d = d % n;
     if(d>n) return;
@@ -143,21 +144,19 @@ int rightRotateByd(int *a, int n, int d){
     }
 }
 //OA
-void reverse(int *a, int start, int end){
+void reverse(vector <int>&a, int start, int end){
     while(start <= end){
-        int temp = a[start];
-        a[start] = a[end];
-        a[end] = temp;
+        swap(a[start],a[end]);
         start++;
         end--;
     }
 }
-void leftRotateBydOA(int *a, int n, int d){
+void leftRotateBydOA(vector <int>&a, int n, int d){
     reverse(a, 0, d-1);
     reverse(a, d , n-1);
     reverse(a, 0, n-1);
 }
-void rightRotateBydOA(int *a, int n, int d){
+void rightRotateBydOA(vector <int>&a, int n, int d){
     reverse(a, 0, n-d-1);
     reverse(a, n-d, n-1);
     reverse(a, 0, n-1);
@@ -165,7 +164,7 @@ void rightRotateBydOA(int *a, int n, int d){
 
 //move zeroes to end
 //BFA
-void moveZeroesToEndBFA(int *a, int n){
+void moveZeroesToEndBFA(vector <int>&a, int n){
     int temp[n];
     int count = 0;
     for(int i = 0; i < n; i++){
@@ -182,7 +181,7 @@ void moveZeroesToEndBFA(int *a, int n){
     }
 }
 
-void moveZeroesToEndOA(int *a, int n){
+void moveZeroesToEndOA(vector <int>&a, int n){
     int j = -1;
     for(int i = 0; i < n; i++){
         if(a[i]==0){
@@ -192,15 +191,13 @@ void moveZeroesToEndOA(int *a, int n){
     }
     for(int i = j+1; i < n; i++){
         if(a[i] != 0){
-            int temp = a[i];
-            a[i] = a[j];
-            a[j] = temp;
+            swap(a[i], a[j]);
             j++;
         }
     }
 }
 
-int linearSearch(int *a, int n, int key){
+int linearSearch(vector <int>&a, int n, int key){
     for(int i = 0; i < n; i++){
         if(a[i] == key){
             return i;
@@ -212,7 +209,7 @@ int linearSearch(int *a, int n, int key){
 //union,intersection  XX
 //Missing number
 //BFA-> using linear search
-int missingNumberBFA(int *a, int n){
+int missingNumberBFA(vector <int>&a, int n){
     int N = n+1;
     for(int i = 1; i <= N; i++){
         int flag = 0;
@@ -229,24 +226,21 @@ int missingNumberBFA(int *a, int n){
     return -1;
 }
 
-int missingNumberBA(int *a, int n){
+int missingNumberBA(vector <int>&a, int n){
     int N = n+1;
-    int* hash = (int*)calloc(N+1,sizeof(int));
+    int hash[N+1]= {0};
     for(int i = 0; i < n; i++){
         hash[a[i]]++;
     }
-    int missing = -1;
     for(int i = 1; i <= N; i++){
         if(hash[i] == 0){
-            missing = i;
-            break;
+            return i;
         }
     }
-    free(hash);
-    return missing;
+    return -1;
 }
 
-int missingNumberOA1(int *a, int n){
+int missingNumberOA1(vector <int>&a, int n){
     int N = n+1;
     int expectedSum = (N*(N+1)) / 2;
     int actualSum = 0;
@@ -256,7 +250,7 @@ int missingNumberOA1(int *a, int n){
     return expectedSum - actualSum;
 }
 
-int missingNumberOA2(int *a, int n){
+int missingNumberOA2(vector <int>&a, int n){
     int N = n+1;
     int xor1 = 0;
     int xor2 = 0;
@@ -268,7 +262,7 @@ int missingNumberOA2(int *a, int n){
     }
     return xor1 ^ xor2;
 }
-int missingNumberOA3(int *a, int n){
+int missingNumberOA3(vector <int>&a, int n){
     int N = n+1;
     int xor1 = 0;
     int xor2 = 0;
@@ -282,7 +276,7 @@ int missingNumberOA3(int *a, int n){
 
 
 //Maximum Consecutive Ones
-int findMaximumConsecutiveOnes(int *a, int n){
+int findMaximumConsecutiveOnes(vector <int>&a, int n){
     int count = 0;
     int maxi = 0;
     for(int i = 0; i < n; i++){
@@ -301,7 +295,7 @@ int findMaximumConsecutiveOnes(int *a, int n){
 
 //number that appears once, and other numbers twice.
 //BFA
-int singleNumberBFA(int *a, int n){
+int singleNumberBFA(vector <int>&a, int n){
     for(int i = 0; i < n; i++){
         int num = a[i];
         int count = 0;
@@ -317,24 +311,21 @@ int singleNumberBFA(int *a, int n){
     return -1;
 }
 //BA
-int singleNumberBA(int *a, int n){
+int singleNumberBA(vector <int>&a, int n){
     int max = findLargestElement(a,n);
-    int *hash = (int*)calloc(max+1, sizeof(int));
+    int hash[max+1] = {0};
     for(int i = 0; i < n; i++){
         hash[a[i]]++;
     }
-    int result = -1;
     for(int i = 0; i < n; i++){
         if(hash[a[i]]==1){
-            result = a[i];
-            break;
+            return a[i];
         }
     }
-    free(hash);
-    return result;
+    return -1;
 }
 //OA
-int singleNumberOA(int *a, int n){
+int singleNumberOA(vector <int>&a, int n){
     int xorr = 0;
     for(int i = 0; i < n; i++){
         xorr = xorr ^ a[i];
@@ -345,7 +336,7 @@ int singleNumberOA(int *a, int n){
 //Longest subarray with sum k
 //contiguous part of the array with sum k
 //return the longest length
-int longestSubarrayWithSumK(int *a, int n, int k){
+int longestSubarrayWithSumK(vector <int>&a, int n, int k){
     int len = 0;
     for(int i = 0; i < n; i++){
         int sum = 0;
