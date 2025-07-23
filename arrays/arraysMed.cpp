@@ -14,7 +14,19 @@ vector<int> twoSumBFA(vector<int>& a, int n, int target){
     }
     return {-1, -1};
 }
-//BA->hashmap X
+//BA->hashmap
+vector<int> twoSumBA(vector<int>& a, int n, int target){
+    unordered_map<int, int> mpp;
+    for(int i = 0; i < n; i++){
+        int num = a[i];
+        int moreNeeded = target - num;
+        if(mpp.find(moreNeeded) != mpp.end()){
+            return {mpp[moreNeeded], i};
+        }
+        mpp[num] = i;
+    }
+    return {-1,-1};
+}
 //OA->only for varient which return true, false
 int twoSumOA(vector<int>& a, int n, int target){
     sort(a.begin(), a.end());

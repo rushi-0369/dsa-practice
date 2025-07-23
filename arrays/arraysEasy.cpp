@@ -16,7 +16,7 @@ int findLargestElement(vector <int>&a, int n){
 //BFA->sort
 int findSecondLargestElementBFA(vector <int>&a, int n){
     sort(a.begin(), a.end());
-    int largest = findLargestElement(a,n);
+    int largest = a[n-1];
     int secondLargest = -1;
     for(int i = n-2; i >= 0; i++){
         if(a[i] != largest){
@@ -136,7 +136,7 @@ int rightRotateByd(vector <int>&a, int n, int d){
     for(int i = n-d ;i < n; i++){
         temp[i - (n - d)] = a[i];
     }
-    for(int i = n-d-1; i>=0; i++){
+    for(int i = n-d-1; i>=0; i--){
         a[i+d] = a[i];
     }
     for(int i = 0; i < d; i++){
@@ -192,6 +192,18 @@ void moveZeroesToEndOA(vector <int>&a, int n){
     for(int i = j+1; i < n; i++){
         if(a[i] != 0){
             swap(a[i], a[j]);
+            j++;
+        }
+    }
+}
+
+void moveZeroesToEndOA2(vector<int>&a, int n){
+    int j = 0;
+    for(int i = 0; i < n; i++){
+        if(a[i] != 0){
+            if(i != j){
+                swap(a[i], a[j]);
+            }
             j++;
         }
     }
