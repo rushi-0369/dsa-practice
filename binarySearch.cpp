@@ -36,6 +36,7 @@ int binarySearchRecursive(vector<int>& a, int tar, int st, int end){
 }
 
 //Lower Bound lb = lower_bound(a.begin(), a.end(), tar)-a.begin();
+//[3, 5, 8, 15, 19] tar = 8 lb = 2 ub = 3
 int lowerBound(vector<int>& a, int tar){
     int start = 0;
     int end = a.size() - 1;
@@ -70,13 +71,13 @@ int upperBound(vector<int>& a, int tar){
     return ans;
 }
 //Search insert position
-int searchInsert(vector<int>& a, int tar){
+int searchInsert(vector<int>& a, int num){
     int start = 0;
     int end = a.size() - 1;
     int ans = a.size();
     while(start <= end){
         int mid = start + (end  - start)/2;
-        if(a[mid] >= tar){
+        if(a[mid] >= num){
             ans = mid;
             end = mid - 1;
         }
@@ -86,6 +87,39 @@ int searchInsert(vector<int>& a, int tar){
     }
     return ans;
 }
+//floor and ceil
+//[3, 4, 4, 7, 8, 10] x=5 ans = 4 7
+int findFloor(int arr[], int n, int x) {
+	int low = 0, high = n - 1;
+	int ans = -1;
+	while (low <= high) {
+		int mid = (low + high) / 2;
+		if (arr[mid] <= x) {
+			ans = arr[mid];
+			low = mid + 1;
+		}
+		else {
+			high = mid - 1;
+		}
+	}
+	return ans;
+}
+int findCeil(int arr[], int n, int x) {
+	int low = 0, high = n - 1;
+	int ans = -1;
+	while (low <= high) {
+		int mid = (low + high) / 2;
+		if (arr[mid] >= x) {
+			ans = arr[mid];
+			high = mid - 1;
+		}
+		else {
+			low = mid + 1;
+		}
+	}
+	return ans;
+}
+
 //first and last occurence
 vector<int> searchRange1(vector<int>& nums, int target) {
     int n = nums.size();
@@ -260,8 +294,29 @@ int findKRotation(vector<int>& a){
     }
     return index;
 }
-//single element in sorted array
+
 //peak
+int peak(vector<int>& a){
+    if(a.size()==1) return 0;
+    if(a[0] > a[1]) return 0;
+    if(a[a.size()-1] > a[a.size()-2]) return a.size()-1;
+    int st = 1;
+    int end = a.size()-1;
+    while(st<=end){
+        int mid = st + (end - st)/2;
+        if(a[mid-1] < a[mid] && a[mid] > a[mid+1]){
+            return mid;
+        }
+        if(a[mid-1] < a[mid]){
+            st = mid+1;
+        }
+        else{
+            end = mid-1;
+        }
+    }
+    return -1;
+}
+//peak in mountain
 int peakInMountain(vector<int>& a){
     int st = 1;
     int end = a.size()-2;
@@ -280,6 +335,7 @@ int peakInMountain(vector<int>& a){
     return -1;
 }
 
+//single element in sorted array
 int singleElementBFA1(vector<int> &a){
     if(a.size()==1) return a[0];
     for(int i = 0; i < a.size(); i++){
@@ -301,7 +357,6 @@ int singleElementBFA1(vector<int> &a){
     }
     return -1;
 }
-
 int singleElement(vector<int> &a){
     int st = 0;
     int end = a.size() - 1;
@@ -376,4 +431,145 @@ bool isValid(vector<int>& a, int n, int m, int mid){
     else{
         return true;
     }
+}
+
+//BS on answers
+
+int sqrtOfN(int num){
+    int st = 1;
+    int end = num;
+    int ans = -1;
+    while(st <= end){
+        long long mid = st + (end - st)/2;
+        if(mid*mid <= num){
+            ans = mid;
+            st = mid + 1;
+        }
+        else{
+            end = mid - 1; 
+        }
+    }
+    return ans;//high
+}
+
+// int nthRootOfM(int n, int m){
+
+// }
+
+//koko eating bananas
+//return the min integer k such that koko can eat all bananas within h hours
+//input array of bananas and h hours
+//k bananas/hr
+//BFA
+// for(int i = 1->max(arr)){
+//     reqTime = func(arr, i);
+//     if(reqTime <= h){
+//         return i;
+//     }
+// }
+// func(arr, hourly){
+//     totalHrs = 0
+//     for(int i = 0->n-1){
+//         totalHrs += ceil(arr[i]/hourly;
+//     }
+//     return totalHrs;
+// }
+int findLargestElement(vector<int>& a){
+    int n = a.size();
+    int max = a[0];
+    for(int i = 1; i < n; i++){
+        if(max < a[i]){
+            max = a[i];
+        }
+    }
+    return max;
+}
+long long totalHrs(vector<int>& piles, int hourly){
+    long long totalhrs = 0;
+    int n = piles.size();
+    for(int i = 0; i < n; i++){
+        totalhrs += ceil((double)(piles[i]) / hourly);
+    }
+    return totalhrs;
+}
+int minEatingSpeed(vector<int>& piles, int h) {
+    int low = 1;
+    int high = findLargestElement(piles);
+    int ans = INT_MAX;
+    while(low <= high){
+        int mid = low + (high-low)/2;
+        long long totalhrs = totalHrs(piles, mid);
+        if(totalhrs <= h){
+            ans = mid;
+            high = mid - 1;
+        }
+        else{
+            low = mid + 1;
+        }
+    }
+    return ans; //low
+}
+
+//Minimum no.of days to make M bouquets
+//given bloom day array, m no.of bouquets, k adjacent flowers required
+//BFA
+// if(n < m*k) return -1;
+// for(int i = mini->maxi){
+//     if(possible(arr, i, m, k)){
+//         return i;
+//     }
+// }
+// return -1;
+// possible(arr[], day, m, k){
+//     cnt = 0;
+//     no.ofB = 0
+//     for(int i = 0 -> n-1){
+//         if(arr[i]<=day){
+//             cnt++;
+//         }
+//         else{
+//             no.ofB += (cnt/k);
+//             cnt = 0;
+//         }
+//     }
+//     no.ofB += (cnt/k);
+//     if(no.ofB >= m) return true;
+//     return false;
+// }
+bool possible(vector<int>& arr, int day, int m, int k){
+    int n = arr.size();
+    int cnt = 0;
+    int noOfB = 0;
+    for(int i = 0; i < n; i++){
+        if(arr[i] <= day){
+            cnt++;
+        }
+        else{
+            noOfB += (cnt/k);
+            cnt = 0;
+        }
+    }
+    noOfB += (cnt/k);
+    if(noOfB >= m) return true;
+    return false;
+}
+int minDays(vector<int> &arr, int k, int m){;
+    int n = arr.size();
+    if(long(m*k) > n) return -1;
+    int mini = INT_MAX, maxi = INT_MIN;
+    for(int i = 0; i < n; i++){
+        mini = min(mini, arr[i]);
+        maxi = max(maxi, arr[i]);
+    }
+    int st = mini, end = maxi;
+    while(st <= end){
+        int mid = st + (end - st)/2;
+        if(possible(arr, mid, m, k)){
+            end = mid - 1;
+        }
+        else{
+            st = mid + 1;
+        }
+    }
+    return st;
 }
