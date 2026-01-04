@@ -88,6 +88,8 @@ int searchInsert(vector<int>& a, int num){
     return ans;
 }
 //floor and ceil
+//floor is the largest element <=x
+//ceil is the smallest element >=x
 //[3, 4, 4, 7, 8, 10] x=5 ans = 4 7
 int findFloor(int arr[], int n, int x) {
 	int low = 0, high = n - 1;
@@ -387,29 +389,11 @@ int singleElement(vector<int> &a){
     }
     return -1;
 }
-
-int bookAllocation(vector<int>& a, int n, int m){
-    if(m>n){
-        return -1;
-    }
-    int st = 0;
-    int end = 0;
-    for(int i = 0; i < n; i++){
-        end = end + a[i];
-    }
-    int ans = -1;
-    while(st<=end){
-        int mid = st + (end-st)/2;
-        if(isValid(a, n, m, mid)){
-            ans = mid;
-            end = mid - 1;
-        }
-        else{
-            st = mid+1;
-        }
-    }
-    return ans;
-}
+//BS on answers
+//max of min
+//book allocation problem
+//m no.of students
+//mid is maximum allowed pages
 bool isValid(vector<int>& a, int n, int m, int mid){
     int stu = 1;
     int pages = 0;
@@ -432,8 +416,117 @@ bool isValid(vector<int>& a, int n, int m, int mid){
         return true;
     }
 }
+int bookAllocation(vector<int>& a, int n, int m){
+    if(m>n){
+        return -1;
+    }
+    int st = 0;
+    int end = 0;
+    for(int i = 0; i < n; i++){
+        end = end + a[i];
+    }
+    int ans = -1;
+    while(st<=end){
+        int mid = st + (end-st)/2;
+        if(isValid(a, n, m, mid)){
+            ans = mid;
+            end = mid - 1;
+        }
+        else{
+            st = mid+1;
+        }
+    }
+    return ans;
+}
 
-//BS on answers
+//(max)min
+//Painters partition problem
+//m no.of painters
+//mid is maximum allowed time
+bool possible(vector<int>& a, int n, int m, int mid){
+    int painter = 1;
+    long long time = 0;
+    for(int i = 0; i < a.size(); i++){
+        if(a[i] > mid){
+            return false;
+        }
+        if(time+a[i] <= mid){
+            time = time + a[i];
+        }
+        else{
+            painter++;
+            time = a[i];
+        }
+    }
+    if(painter<=m){
+        return true;
+    }
+    return false;
+}
+int painterPartition(vector<int>& a, int n, int m){
+    if(m>n){
+        return -1;
+    }
+    long long st = 0;
+    long long end = 0;
+    for(int i = 0; i < a.size(); i++){
+        if(st < a[i]){
+            st = a[i];
+        }
+        end = end + a[i];
+    }
+    int ans = -1;
+    while(st<=end){
+        int mid = st + (end-st)/2;
+        if(possible(a, n, m, mid)){
+            ans = mid;
+            end = mid - 1;
+        }
+        else{
+            st = mid + 1;
+        }
+    }
+    return ans;
+}
+
+//Aggressive Cows => (min)max
+//m no.of cows
+//mid is minimum allowed distance
+bool cowsPossible(vector<int>& a, int m, int mid){
+    int cows = 1;
+    int lastStallPos = a[0];
+    for(int i = 1; i < a.size(); i++){
+        if((a[i] - lastStallPos)>=mid){
+            cows++;
+            lastStallPos = a[i];
+        }
+        if(cows == m) return true;
+    }
+    return false;
+}
+int aggressiveCows(vector<int>& a, int m){
+    sort(a.begin(), a.end());
+    int st = 1;
+    // int maxi=INT_MIN;
+    // int mini=INT_MAX;
+    // for(int i = 0; i < a.size(); i++){
+    //     mini = min(a[i], mini);
+    //     maxi = max(a[i], maxi);
+    // }
+    int end = a[a.size()-1] - a[0] ;
+    int ans = -1;
+    while(st<=end){
+        int mid = st + (end - st)/2;
+        if(cowsPossible(a, m, mid)){
+            ans = mid;
+            st = mid + 1;
+        }
+        else{
+            end = mid - 1;
+        }
+    }
+    return ans;
+}
 
 int sqrtOfN(int num){
     int st = 1;

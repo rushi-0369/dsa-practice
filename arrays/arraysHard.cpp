@@ -74,7 +74,7 @@ vector<vector<int>> pascalTrianglePrintOA(int n){
 //no repetition of i or j or k
 //unique triplet (we sort it)
 //BFA Try out all triplets
-vector<vector<int>> triplet(int n, vector<int> &nums){
+vector<vector<int>> threeSumBFA(int n, vector<int> &nums){
     set<vector<int>> st;
     for(int i = 0; i < n; i++){
         for(int j = i+1; j < n; j++){
@@ -92,3 +92,81 @@ vector<vector<int>> triplet(int n, vector<int> &nums){
 }
 //TC = n^3 + log(no.of unique triplets)
 //SC = 2* no.of unique triplets
+//BA=>Hashing
+vector<vector<int>> threeSumBA(int n, vector<int> &nums){
+    vector<vector<int>> ans;
+    set<vector<int>> uniqueTriplets;
+    for(int i = 0; i < n; i++){
+        int tar = nums[i];
+        set<int> st;
+        for(int j = i+1; j < n; j++){
+            int third = tar - nums[j];
+            if(st.find(third)!=st.end()){
+                vector<int> trip = {nums[i], nums[j], third};
+                sort(trip.begin(), trip.end());
+                uniqueTriplets.insert(trip);
+            }
+            st.insert(nums[j]);
+        }
+    }
+    vector<vector<int>> ans(uniqueTriplets.begin(), uniqueTriplets.end());
+    return ans;
+}
+//OA=> 2 pointers
+vector<vector<int>> threeSumOA(int n, vector<int> &nums){
+    vector<vector<int>> ans;
+    sort(nums.begin(), nums.end());
+    for(int i = 0; i < n ; i++){
+        if(i>0 && nums[i] == nums[i-1]) continue;
+        int j = i + 1;
+        int k = n - 1;
+        while(j<k){
+            int sum = nums[i] + nums[j] + nums[k];
+            if(sum < 0){
+                j++;
+            }
+            else if(sum > 0){
+                k--;
+            }
+            else{
+                ans.push_back({nums[i], nums[j], nums[k]});
+                j++;
+                k--;
+                while(j<k && nums[j]==nums[j-1]) j++;
+            }
+        }
+    }
+    return ans;
+}
+
+//4sum
+vector<vector<int>> fourSumOA(int n, vector<int> &nums, int tar){
+    vector<vector<int>> ans;
+    sort(nums.begin(), nums.end());
+    for(int i = 0; i < n; i++){
+        if(i>0 && nums[i]==nums[i-1]) continue;
+        for(int j = i+1; j < n;){
+            int p = j+1;
+            int q = n - 1;
+            while(p < q){
+                long long sum = (long long)nums[i] + (long long)nums[j] + (long long)nums[p] + (long long)nums[q];
+                if(sum < tar){
+                    p++;
+                }
+                else if(sum > tar){
+                    q--;
+                }
+                else{
+                    ans.push_back({nums[i], nums[j], nums[p], nums[q]});
+                    p++;
+                    q--;
+                    while(p<q && nums[p]== nums[p-1]) p++;
+                }
+            }
+            j++;
+            while(j<n && nums[j] == nums[j-1]) j++;
+        }
+    }
+    return ans;
+}
+

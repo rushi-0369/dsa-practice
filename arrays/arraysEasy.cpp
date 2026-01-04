@@ -83,6 +83,18 @@ int isSortedOA(vector <int>&a, int n){
 
 //remove duplicates from and array and return no.of non duplicate elements
 //BFA-> set data structure set.insert, set.size
+int removeDuplicates(int arr[], int n) {
+  set < int > set;
+  for (int i = 0; i < n; i++) {
+    set.insert(arr[i]);
+  }
+  int k = set.size();
+  int j = 0;
+  for (int x: set) {
+    arr[j++] = x;
+  }
+  return k;
+}
 //OA
 int removeDuplicates(vector <int>&a, int n){
     int i = 0;
@@ -218,7 +230,103 @@ int linearSearch(vector <int>&a, int n, int key){
     return -1;
 }
 
-//union,intersection  XX
+//union,intersection
+vector<int> unionBFA(vector<int>&a1, vector<int>&a2){
+    int n = a1.size();
+    int m = a2.size();
+    set<int> st;
+    for(int i = 0; i < n; i++){
+        st.insert(a1[i]);
+    }
+    for(int j = 0; j < m; j++){
+        st.insert(a2[j]);
+    }
+    vector<int> unionArr(st.begin(), st.end());
+    return unionArr;
+}
+vector<int> unionOA(vector<int>&a1, vector<int>&a2){
+    int n = a1.size();
+    int m = a2.size();
+    int i = 0;
+    int j = 0;
+    vector<int>Union;
+    while(i < n && j < m){
+        if(a1[i] < a2[j]){
+            if(Union.size() == 0 || Union.back() != a1[i]){
+                Union.push_back(a1[i]);
+                i++;
+            }
+        }
+        else if(a2[j] < a1[i]){
+            if(Union.size() == 0 || Union.back() != a2[j]){
+                Union.push_back(a2[j]);
+                j++;
+            }
+        }
+        else{
+            if(Union.size() == 0 || Union.back() != a1[i]){
+                Union.push_back(a1[i]);
+                i++;
+                j++;
+            }
+        }
+    }
+    while(i<n){
+        if(Union.size() == 0 || Union.back() != a1[i]){
+                Union.push_back(a1[i]);
+                i++;
+            }
+    }
+    while(j<m){
+        if(Union.size() == 0 || Union.back() != a2[j]){
+                Union.push_back(a2[j]);
+                j++;
+            }
+    }
+    return Union;
+}
+
+vector<int> IntBFA(vector<int>&a1, vector<int>&a2){
+    int n = a1.size();
+    int m = a2.size();
+    vector<int>vis(m, 0);
+    vector<int>ans;
+    for(int i = 0; i < n; i++){
+        for(int j = 0; j < m; j++){
+            if(a1[i]==a2[j] && vis[j]==0){
+                ans.push_back(a1[i]);
+                vis[j] = 1;
+                break;
+            }
+            if(a2[j]>a1[i]){
+                break;
+            }
+        }
+    }
+    return ans;
+}
+vector<int> IntOA(vector<int>&a1, vector<int>&a2){
+    int n = a1.size();
+    int m = a2.size();
+    int i = 0;
+    int j = 0;
+    vector<int> ans;
+    while(i<n && j<m){
+        if(a1[i] < a2[j]){
+            i++;
+        }
+        else if(a2[j] < a1[i]){
+            j++;
+        }
+        else{
+            ans.push_back(a1[i]);
+            i++;
+            j++;
+        }
+    }
+    return ans;
+}
+
 //Missing number
 //BFA-> using linear search
 int missingNumberBFA(vector <int>&a, int n){
