@@ -1,6 +1,30 @@
 #include <bits/stdc++.h>
 using namespace std;
-//Permutations
+//permutations with extra space
+void getPerms1(vector<vector<int>>&ans, vector<int>&ds, int freq[], vector<int>&a){
+    if(ds.size() == a.size()){
+        ans.push_back(ds);
+        return;
+    }
+    for(int i = 0; i < a.size(); i++){
+        if(!freq[i]){
+            freq[i] = 1;
+            ds.push_back(a[i]);
+            getPerms1(ans, ds, freq, a);
+            freq[i] = 0;
+            ds.pop_back();
+        }
+    }
+}
+vector<vector<int>> permutate(vector<int>& a){
+    int n = a.size();
+    vector<vector<int>> ans;
+    vector<int> ds  ;
+    int freq[n] = {0};
+    getPerms1(ans, ds, freq, a);
+    return ans;
+}
+//Permutations without extra space
 void getPerms(int idx, vector<int>& a, vector<vector<int>>& result){
     if(a.size()==idx){
         result.push_back(a);
@@ -13,7 +37,7 @@ void getPerms(int idx, vector<int>& a, vector<vector<int>>& result){
     }
 }
 vector<vector<int>> permutate(vector<int>& a, int n){
-    vector<vector<int>> result(n);
+    vector<vector<int>> result;
     getPerms(0, a, result);
     return result;
 }

@@ -456,6 +456,7 @@ int singleNumberOA(vector <int>&a, int n){
 //Longest subarray with sum k
 //contiguous part of the array with sum k
 //return the longest length
+//positives only
 int longestSubarrayWithSumK(vector <int>&a, int n, int k){
     int len = 0;
     for(int i = 0; i < n; i++){
@@ -472,3 +473,41 @@ int longestSubarrayWithSumK(vector <int>&a, int n, int k){
     return len;
 }
 //BA and OA XX
+
+//Subbarray sum k
+//count how many subarrays with sum k
+//BFA
+int SubarraySumKBFA(vector <int>&a, int n, int k){
+    int count = 0;
+    for(int i = 0; i < n; i++){
+        int sum = 0;
+        for(int j = i; j < n; j++){
+            sum = sum + a[j];
+            if(sum==k){
+                count++;
+            }
+        }
+    }
+    return count;
+}
+//OA
+int SubarraySumKOA(vector<int>& arr, int k){
+    int n = arr.size();
+    vector<int> prefixSum(n, 0);
+    prefixSum[0] = arr[0];
+    int count = 0;
+    for(int i = 1; i < n ; i++){
+        prefixSum[i] = prefixSum[i-1] + arr[i];
+    }
+    unordered_map<int, int> map;
+    for(int j = 0; j < n ; j++){
+        if(prefixSum[j] == k) count++;
+        int val = prefixSum[j] - k;
+        if(map.find(val) != map.end()) count += map[val];
+        if(map.find(prefixSum[j]) == map.end()){
+            map[prefixSum[j]] = 0;
+        }
+        map[prefixSum[j]]++;
+    }
+    return count;
+}
