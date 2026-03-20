@@ -97,10 +97,9 @@ vector<vector<int>> threeSumBA(int n, vector<int> &nums){
     vector<vector<int>> ans;
     set<vector<int>> uniqueTriplets;
     for(int i = 0; i < n; i++){
-        int tar = nums[i];
         set<int> st;
         for(int j = i+1; j < n; j++){
-            int third = tar - nums[j];
+            int third = -(nums[i] + nums[j]);
             if(st.find(third)!=st.end()){
                 vector<int> trip = {nums[i], nums[j], third};
                 sort(trip.begin(), trip.end());
@@ -129,10 +128,11 @@ vector<vector<int>> threeSumOA(int n, vector<int> &nums){
                 k--;
             }
             else{
+                while(j<k && nums[j]==nums[j+1]) j++;
+                while(j<k && nums[k]==nums[k-1]) k--;
                 ans.push_back({nums[i], nums[j], nums[k]});
                 j++;
                 k--;
-                while(j<k && nums[j]==nums[j-1]) j++;
             }
         }
     }
@@ -145,7 +145,8 @@ vector<vector<int>> fourSumOA(int n, vector<int> &nums, int tar){
     sort(nums.begin(), nums.end());
     for(int i = 0; i < n; i++){
         if(i>0 && nums[i]==nums[i-1]) continue;
-        for(int j = i+1; j < n;){
+        int j = i+1;
+        while(j < n){
             int p = j+1;
             int q = n - 1;
             while(p < q){

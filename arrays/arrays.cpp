@@ -60,10 +60,9 @@ vector<vector<int>> threeSum(vector<int>& nums) {
 int n = nums.size();
 set<vector<int>> uniqueTriplets;
 for(int i = 0; i < n; i++){
-    int tar = -nums[i];
     set<int> st;
     for(int j = i + 1; j < n; j++){
-        int third = tar - nums[j];
+        int third = -(nums[i] + nums[j]);
         if(st.find(third)!=st.end()){
             vector<int> trip = {nums[i], nums[j], third};
             sort(trip.begin(), trip.end());
@@ -83,6 +82,7 @@ vector<vector<int>> result;
 sort(nums.begin(), nums.end());
 if(n<3) return {};
 for(int i = 0; i < n-2; i++){
+    //duplicates
     if(i>0 && nums[i]==nums[i-1]) continue;
     int target = -nums[i];
     int j = i+1;
@@ -95,9 +95,10 @@ for(int i = 0; i < n-2; i++){
             j++;
         }
         else{
-            result.push_back({nums[i], nums[j], nums[k]});
+            //duplicates
             while(j<k && nums[j]==nums[j+1]) j++;
             while(j<k && nums[k]==nums[k-1]) k--;
+            result.push_back({nums[i], nums[j], nums[k]});
             j++;
             k--;
         }
@@ -161,4 +162,33 @@ int threeSumClosest(vector<int> &nums, int target){
         }
     }
     return closestSum;
+}
+
+//Factorial of large numbers GFG
+void multiply(vector<int>&arr, int &size, int j){
+    int carry = 0;
+    for(int i = 0; i < size; i++){
+        int res =  j * arr[i];
+        res = res + carry;
+        arr[i] = res % 10;
+        carry = res / 10;
+    }
+    while(carry>0){
+        arr[size] = carry%10;
+        size++;
+        carry = carry/10;
+    }
+}
+vector<int> factorial(int N){
+    vector<int> arr(10000, 0);
+    arr[0] = 1;
+    int size = 1;
+    for(int i = 2; i <= N; i++){
+        multiply(arr, size, i);
+    }
+    vector<int> result;
+    for(int i = size-1; i>=0; i++){
+        result.push_back(arr[i]);
+    }
+    return result;
 }
