@@ -162,3 +162,103 @@ int threeSumClosest(vector<int> &nums, int target){
     }
     return closestSum;
 }
+
+//GFG Factorials of large numbers
+void multiply(vector<int>& arr, int& size, int x){
+    int carry = 0;
+    for(int i = 0; i < size; i++){
+        int res = arr[i] * x + carry;
+        res = res % 10;
+        carry = res / 10;
+    }
+    while(carry){
+        arr[size] = carry % 10;
+        size++;
+        carry = carry / 10;
+    }
+}
+vector<int> factorial(int n){
+    vector<int> arr(10000, 0);
+    int arr[0] = 0;
+    int size = 1;
+    for(int i = 1; i <= n; i++){
+        multiply(arr, size , i);
+    }
+    vector<int> result;
+    for(int i = n - 1; i >= 0; i--){
+        result.push_back(arr[i]);
+    }
+    return result;
+}
+
+//31. Next Permutation
+void nextPermutation(vector<int> &nums){
+    int n = nums.size();
+    int pivot = -1;
+    for(int i = n-2; n >= 0; i--){
+        if(nums[i] > nums[i+1]){
+            pivot = i;
+            break;
+        }
+    }
+    if(pivot == -1){
+        reverse(nums.begin(), nums.end());
+        return;
+    }
+    for(int i = n-1; i > pivot; i--){
+        if(nums[i] > nums[pivot]){
+            swap(nums[i], nums[pivot]);
+            break;
+        }
+    }
+    int i = pivot + 1;
+    int j = n - 1;
+    while(i < j){
+        swap(nums[i], nums[j]);
+        i++;
+        j--;
+    }
+}
+
+//48. Rotate Image
+void rotate(vector<vector<int>> &matrix){
+    int n = matrix.size();
+    for(int i = 0; i < n; i++){
+        for(int j = 0; j < n; j++){
+            matrix[j][n-i-1] = matrix[i][j];
+        }
+    }
+}
+
+void rotate(vector<vector<int>> &matrix){
+    int n = matrix.size();
+    for(int i = 0; i <= n-2; i++){
+        for(int j = i+1; j <= n-1; j++){
+            swap(matrix[i][j], matrix[j][i]);
+        }
+    }
+    for(int i = 0; i < n; i++){
+        reverse(matrix[i].begin(), matrix[i].end();
+    }
+}
+
+//11. Container with most water
+int maxArea(vector<int> &height){
+    int n = height.size();
+    int lp = 0;
+    int rp = n - 1;
+    int maxWater = 0;
+    while(lp < rp){
+        int ht = min(height[lp], height[rp]);
+        int wt = rp - lp;
+        int area = ht * wt;
+        maxWater = max(area, maxWater);
+        if(height[lp] < height[rp]){
+            lp++;
+        }
+        else{
+            rp--;
+        }
+    }
+    return maxWater;
+}
