@@ -87,6 +87,7 @@ int searchInsert(vector<int>& a, int num){
     }
     return ans;
 }
+
 //floor and ceil
 //floor is the largest element <=x
 //ceil is the smallest element >=x
@@ -245,6 +246,7 @@ int searchRotatedSorted(vector<int>& a, int tar){
     }
     return false;
 }
+
 //minimum in rotated sorted array
 int findMin(vector<int>& a){
     int start = 0, end = a.size() - 1;
@@ -266,6 +268,59 @@ int findMin(vector<int>& a){
     }
     return ans;
 }
+int findMin(vector<int>& a){
+    int start = 0, end = a.size() - 1;
+    while(start < end){
+        int mid = start + (end -start)/2;
+        if(a[mid]>a[end]){
+            start = mid + 1;
+        }
+        else{
+            end = mid;
+        }
+    }
+    return a[end];
+}
+
+//search in 2d matrix
+bool searchMatrix(vector<vector<int>>& a, int target){
+    int m = a.size();
+    int n = a[0].size();
+    int i = 0;
+    int j = n - 1;
+    while(i < m && j >= 0){
+        if(a[i][j]>target){
+            j--;
+        }
+        else if(a[i][j]<target){
+            i++;
+        }
+        else{
+            return true;
+        }
+    }
+    return false;
+}
+bool searchMatrix(vector<vector<int>>& a, int target){
+    int m = a.size();
+    int n = a[0].size();
+    int start = 0;
+    int end = m*n-1;
+    while(start <= end){
+        int mid = start + (end - start)/2;
+        if(a[mid/n][mid%n]>target){
+            end = mid - 1;
+        }
+        else if(a[mid/n][mid%n]<target){
+            start = mid + 1;
+        }
+        else{
+            return true;
+        }
+    }
+    return false;
+}
+
 int findKRotation(vector<int>& a){
     int start = 0, end = a.size() - 1;
     int ans = INT_MAX;
@@ -389,6 +444,7 @@ int singleElement(vector<int> &a){
     }
     return -1;
 }
+
 //BS on answers
 //max of min
 //book allocation problem
