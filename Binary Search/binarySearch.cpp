@@ -23,10 +23,10 @@ int binarySearchRecursive(vector<int>& a, int tar, int st, int end){
     if(st <= end){
         int mid = st + (end - st)/2;
         if(tar > a[mid]){
-            binarySearchRecursive(a, tar, mid+1, end);
+            return binarySearchRecursive(a, tar, mid+1, end);
         }
         else if(tar < a[mid]){
-            binarySearchRecursive(a, tar, st, mid-1);
+            return binarySearchRecursive(a, tar, st, mid-1);
         }
         else{
             return mid;
@@ -214,7 +214,7 @@ int searchRotatedSorted(vector<int>& a, int tar){
     return -1;
 }
 //duplicates
-int searchRotatedSorted(vector<int>& a, int tar){
+bool searchRotatedSorted1(vector<int>& a, int tar){
     int st = 0;
     int end = a.size() - 1;
     while(st <= end){
@@ -625,13 +625,13 @@ int sqrtOfN(int num){
 // }
 int findLargestElement(vector<int>& a){
     int n = a.size();
-    int max = a[0];
+    int maxi = a[0];
     for(int i = 1; i < n; i++){
-        if(max < a[i]){
-            max = a[i];
+        if(maxi < a[i]){
+            maxi = a[i];
         }
     }
-    return max;
+    return maxi;
 }
 long long totalHrs(vector<int>& piles, int hourly){
     long long totalhrs = 0;
