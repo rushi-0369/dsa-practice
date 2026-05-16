@@ -321,6 +321,7 @@ bool searchMatrix(vector<vector<int>>& a, int target){
     return false;
 }
 
+//find min index
 int findKRotation(vector<int>& a){
     int start = 0, end = a.size() - 1;
     int ans = INT_MAX;
@@ -489,6 +490,7 @@ int singleElement(vector<int>&a){
     }
     return a[end];
 }
+
 bool isPossible(vector<int>& time, long long mid, int totalTrips){
     long long trips = 0;
     for(int i = 0; i < time.size(); i++){

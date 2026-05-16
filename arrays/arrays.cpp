@@ -304,3 +304,33 @@ int maxArea(vector<int> &height){
     }
     return maxWater;
 }
+
+//2090. K radius subarray averages
+//prefix sum/cummulative sum
+vector<int> getAverages(vector<int>& nums, int k) {
+    if(k==0){
+        return nums;
+    }
+    int n = nums.size();
+    vector<int> cumSum(n);
+    cumSum[0] = nums[0];
+    for(int i = 1; i < n; i++){
+        cumSum[i] = cumSum[i-1] + nums[i];
+    }
+    vector<int>result(n, -1);
+    int el = 2*k + 1;
+    if(n < el){
+        return result;
+    }
+    for(int i = k; i < n-k; i++){
+        int left_idx = i-k;
+        int right_idx = i+k;
+        int sum = cumSum[i+k];
+        if(i-k > 0){
+            sum -= cumSum[i-k-1];
+        }
+        int avg = sum/el;
+        result[i] = avg;
+    }
+    return result;
+}
