@@ -7,78 +7,99 @@ using namespace std;
 // st.top()
 // st.sixe()
 
-class Stack {
+class Stack
+{
 private:
     int size;
     int top;
-    int* a;
+    int *a;
 
 public:
     // Constructor
-    Stack(int s) {
+    Stack(int s)
+    {
         size = s;
         top = -1;
         a = new int[size];
     }
 
     // Destructor
-    ~Stack() {
+    ~Stack()
+    {
         delete[] a;
     }
 
-    bool isFull() {
+    bool isFull()
+    {
         return top == size - 1;
     }
 
-    bool isEmpty() {
+    bool isEmpty()
+    {
         return top == -1;
     }
 
-    void push(int value) {
-        if (isFull()) {
+    void push(int value)
+    {
+        if (isFull())
+        {
             cout << "Stack Overflow! Cannot push " << value << " to the stack\n";
-        } else {
+        }
+        else
+        {
             top = top + 1;
             a[top] = value;
         }
     }
 
-    int pop() {
-        if (isEmpty()) {
+    int pop()
+    {
+        if (isEmpty())
+        {
             cout << "Stack Underflow! Cannot pop from the stack\n";
             return -1;
-        } else {
+        }
+        else
+        {
             return a[top--];
         }
     }
 
-    int peek(int i) {
-        if (top - i + 1 < 0) {
+    int peek(int i)
+    {
+        if (top - i + 1 < 0)
+        {
             cout << "Not a valid position\n";
             return -1;
-        } else {
+        }
+        else
+        {
             return a[top - i + 1];
         }
     }
 
-    int getSize() {
+    int getSize()
+    {
         return top + 1;
     }
 
-    int stackTop() {
+    int stackTop()
+    {
         if (!isEmpty())
             return a[top];
         return -1;
     }
 
-    int stackBottom() {
+    int stackBottom()
+    {
         if (!isEmpty())
             return a[0];
         return -1;
     }
 };
 
-int main() {
+int main()
+{
     Stack sp(5);
 
     sp.push(6);

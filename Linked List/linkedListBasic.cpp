@@ -224,20 +224,24 @@ public:
         }
         return -1;
     }
-    Node* arrToLL(vector<int> &arr){
-        Node* head = new Node(arr[0]);
-        Node* mover  = head;
-        for(int i = 1 ; i < arr.size(); i++){
-            Node* temp = new Node(arr[i]);
+    Node *arrToLL(vector<int> &arr)
+    {
+        Node *head = new Node(arr[0]);
+        Node *mover = head;
+        for (int i = 1; i < arr.size(); i++)
+        {
+            Node *temp = new Node(arr[i]);
             mover->next = temp;
             mover = temp;
         }
         return head;
     }
-    int lengthOfLL(Node* head){
+    int lengthOfLL(Node *head)
+    {
         int cnt = 0;
-        Node* temp = head;
-        while(temp != NULL){
+        Node *temp = head;
+        while (temp != NULL)
+        {
             temp = temp->next;
             cnt++;
         }

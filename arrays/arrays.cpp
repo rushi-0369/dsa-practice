@@ -202,15 +202,18 @@ int threeSumClosest(vector<int> &nums, int target)
     return closestSum;
 }
 
-//GFG Factorials of large numbers
-void multiply(vector<int>& arr, int& size, int x){
+// GFG Factorials of large numbers
+void multiply(vector<int> &arr, int &size, int x)
+{
     int carry = 0;
-    for(int i = 0; i < size; i++){
+    for (int i = 0; i < size; i++)
+    {
         int res = arr[i] * x + carry;
         arr[i] = res % 10;
         carry = res / 10;
     }
-    while(carry){
+    while (carry)
+    {
         arr[size] = carry % 10;
         size++;
         carry = carry / 10;
@@ -233,103 +236,127 @@ vector<int> factorial(int N)
     return result;
 }
 
-//31. Next Permutation
-void nextPermutation(vector<int> &nums){
+// 31. Next Permutation
+void nextPermutation(vector<int> &nums)
+{
     int n = nums.size();
     int pivot = -1;
-    for(int i = n-2; i >= 0; i--){
-        if(nums[i] < nums[i+1]){
+    for (int i = n - 2; i >= 0; i--)
+    {
+        if (nums[i] < nums[i + 1])
+        {
             pivot = i;
             break;
         }
     }
-    if(pivot == -1){
+    if (pivot == -1)
+    {
         reverse(nums.begin(), nums.end());
         return;
     }
-    for(int i = n-1; i > pivot; i--){
-        if(nums[i] > nums[pivot]){
+    for (int i = n - 1; i > pivot; i--)
+    {
+        if (nums[i] > nums[pivot])
+        {
             swap(nums[i], nums[pivot]);
             break;
         }
     }
     int i = pivot + 1;
     int j = n - 1;
-    while(i < j){
+    while (i < j)
+    {
         swap(nums[i], nums[j]);
         i++;
         j--;
     }
 }
 
-//48. Rotate Image
-void rotate(vector<vector<int>> &matrix){
+// 48. Rotate Image
+void rotate(vector<vector<int>> &matrix)
+{
     int n = matrix.size();
-    for(int i = 0; i < n; i++){
-        for(int j = 0; j < n; j++){
-            matrix[j][n-i-1] = matrix[i][j];
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            matrix[j][n - i - 1] = matrix[i][j];
         }
     }
 }
 
-void rotate(vector<vector<int>> &matrix){
+void rotate(vector<vector<int>> &matrix)
+{
     int n = matrix.size();
-    for(int i = 0; i <= n-2; i++){
-        for(int j = i+1; j <= n-1; j++){
+    for (int i = 0; i <= n - 2; i++)
+    {
+        for (int j = i + 1; j <= n - 1; j++)
+        {
             swap(matrix[i][j], matrix[j][i]);
         }
     }
-    for(int i = 0; i < n; i++){
+    for (int i = 0; i < n; i++)
+    {
         reverse(matrix[i].begin(), matrix[i].end());
     }
 }
 
-//11. Container with most water
-int maxArea(vector<int> &height){
+// 11. Container with most water
+int maxArea(vector<int> &height)
+{
     int n = height.size();
     int lp = 0;
     int rp = n - 1;
     int maxWater = 0;
-    while(lp < rp){
+    while (lp < rp)
+    {
         int ht = min(height[lp], height[rp]);
         int wt = rp - lp;
         int area = ht * wt;
         maxWater = max(area, maxWater);
-        if(height[lp] < height[rp]){
+        if (height[lp] < height[rp])
+        {
             lp++;
         }
-        else{
+        else
+        {
             rp--;
         }
     }
     return maxWater;
 }
 
-//2090. K radius subarray averages
-//prefix sum/cummulative sum
-vector<int> getAverages(vector<int>& nums, int k) {
-    if(k==0){
+// 2090. K radius subarray averages
+// prefix sum/cummulative sum
+vector<int> getAverages(vector<int> &nums, int k)
+{
+    if (k == 0)
+    {
         return nums;
     }
     int n = nums.size();
     vector<int> cumSum(n);
     cumSum[0] = nums[0];
-    for(int i = 1; i < n; i++){
-        cumSum[i] = cumSum[i-1] + nums[i];
+    for (int i = 1; i < n; i++)
+    {
+        cumSum[i] = cumSum[i - 1] + nums[i];
     }
-    vector<int>result(n, -1);
-    int el = 2*k + 1;
-    if(n < el){
+    vector<int> result(n, -1);
+    int el = 2 * k + 1;
+    if (n < el)
+    {
         return result;
     }
-    for(int i = k; i < n-k; i++){
-        int left_idx = i-k;
-        int right_idx = i+k;
-        int sum = cumSum[i+k];
-        if(i-k > 0){
-            sum -= cumSum[i-k-1];
+    for (int i = k; i < n - k; i++)
+    {
+        int left_idx = i - k;
+        int right_idx = i + k;
+        int sum = cumSum[i + k];
+        if (i - k > 0)
+        {
+            sum -= cumSum[i - k - 1];
         }
-        int avg = sum/el;
+        int avg = sum / el;
         result[i] = avg;
     }
     return result;

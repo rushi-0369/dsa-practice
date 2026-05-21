@@ -126,6 +126,7 @@ string minWindow(string s, string t){
 //temp = smaller - culpritIdx
 //if(temp<=0) ans += 0
 //else ans += temp
+//valid subarrays ending at i=max(0,min(minPosi,maxPosi)−culpritIdx)
 long long countSubbarays(vector<int>&nums, int minK, int maxK){
     long long ans = 0;
     int minPosi = -1;
@@ -207,4 +208,82 @@ vector<int> getAverages(vector<int>& nums, int k){
         l++;
     }
     return result;
+}
+
+//1493. Longest Subarray of 1's After Deleting One Element
+//Example 1:
+// Input: nums = [1,1,0,1]
+// Output: 3
+// Explanation: After deleting the number in position 2, [1,1,1] contains 3 numbers with value of 1's.
+// Example 2:
+// Input: nums = [0,1,1,1,0,1,1,0,1]
+// Output: 5
+// Explanation: After deleting the number in position 4, [0,1,1,1,1,1,0,1] longest subarray with value of 1's is [1,1,1,1,1].
+// Example 3:
+// Input: nums = [1,1,1]
+// Output: 2
+// Explanation: You must delete one element.
+int findMax(vector<int>&nums, int skip_idx){
+    int n = nums.size();
+    int currLen = 0;
+    int maxLen = 0;
+    for(int i = 0; i < n; i++){
+        if(i==skip_idx){
+            continue;
+        }
+        if(nums[i] == 1){
+            currLen++;
+            maxLen = max(currLen, maxLen);
+        }
+        else{
+            currLen = 0;
+        }
+    }
+    return maxLen;
+}
+int longestSubarray(vector<int>& nums) {
+    int n = nums.size();
+    int result = 0;
+    int countZero = 0;
+    for(int i = 0; i < n; i++){
+        if(nums[i] == 0){
+            countZero++;
+            result = max(result, findMax(nums, i));
+        }
+    }
+    if(countZero == 0) return n-1;
+    return result;
+}
+
+int longestSubarray(vector<int>& nums) {
+    int i = 0;
+    int j = 0;
+    int zeroCount = 0;
+    int ans = 0;
+    while(j < nums.size()){
+        if(nums[j] == 0) zeroCount++;
+        while(zeroCount > 1){
+            if(nums[i] == 0) zeroCount--;
+            i++;
+        }
+        ans = max(ans, j-i);
+        j++;
+    }
+    return ans;
+}
+
+int longestSubarray(vector<int>& nums) {
+    int i = 0;
+    int j = 0;
+    int idx_pos = -1;
+    int ans = 0;
+    while(j < nums.size()){
+        if(nums[j] == 0){
+            i = idx_pos+1;
+            idx_pos = j;
+        }
+        ans = max(ans, j-i);
+        j++;
+    }
+    return ans;
 }

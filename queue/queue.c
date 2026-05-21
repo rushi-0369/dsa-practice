@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct circularQueue
+struct queue
 {
     int size;
     int frontInd;
@@ -9,9 +9,9 @@ struct circularQueue
     int *a;
 };
 
-int isFull(struct circularQueue *ptr)
+int isFull(struct queue *ptr)
 {
-    if ((ptr->backInd + 1) % ptr->size == ptr->frontInd)
+    if (ptr->backInd == ptr->size - 1)
     {
         return 1;
     }
@@ -20,9 +20,10 @@ int isFull(struct circularQueue *ptr)
         return 0;
     }
 }
-int isEmpty(struct circularQueue *ptr)
+
+int isEmpty(struct queue *ptr)
 {
-    if (ptr->backInd == ptr->frontInd)
+    if (ptr->frontInd == ptr->backInd)
     {
         return 1;
     }
@@ -31,7 +32,7 @@ int isEmpty(struct circularQueue *ptr)
         return 0;
     }
 }
-void enqueue(struct circularQueue *ptr, int value)
+void enqueue(struct queue *ptr, int value)
 {
     if (isFull(ptr))
     {
@@ -39,26 +40,25 @@ void enqueue(struct circularQueue *ptr, int value)
     }
     else
     {
-        ptr->backInd = (ptr->backInd + 1) % ptr->size;
+        ptr->backInd++;
         ptr->a[ptr->backInd] = value;
     }
 }
 
-int dequeue(struct circularQueue *ptr)
+int dequeue(struct queue *ptr)
 {
-    int value = -1;
     if (isEmpty(ptr))
     {
-        printf("Empty queue");
+        printf("No element to dequeue");
     }
     else
     {
-        ptr->frontInd = (ptr->frontInd + 1) % ptr->size;
-        value = ptr->a[ptr->frontInd];
+        int value = ptr->a[ptr->frontInd + 1];
+        ptr->frontInd++;
+        return value;
     }
-    return value;
 }
-int peek(struct circularQueue *ptr, int i)
+int peek(struct queue *ptr, int i)
 {
     if (ptr->backInd - i + 1 < 0)
     {
@@ -71,25 +71,25 @@ int peek(struct circularQueue *ptr, int i)
     }
 }
 
-int size(struct circularQueue *ptr)
+int size(struct queue *ptr)
 {
     return ptr->backInd + 1;
 }
 
-int queueTop(struct circularQueue *ptr)
+int queueTop(struct queue *ptr)
 {
     return ptr->a[ptr->backInd];
 }
 
-int queueBottom(struct circularQueue *ptr)
+int queueBottom(struct queue *ptr)
 {
     return ptr->a[0];
 }
-
 int main()
 {
-    struct circularQueue *q = (struct circularQueue *)malloc(sizeof(struct circularQueue));
+    struct queue *q = (struct queue *)malloc(sizeof(struct queue));
     q->size = 10;
-    q->frontInd = q->backInd = 0;
+    q->frontInd = -1;
+    q->backInd = -1;
     q->a = (int *)malloc(q->size * sizeof(int));
 }
