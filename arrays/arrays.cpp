@@ -172,9 +172,11 @@ int trap(vector<int> &height)
 int threeSumClosest(vector<int> &nums, int target)
 {
     int n = nums.size();
+    if (n < 3)
+        return 0;
     sort(nums.begin(), nums.end());
     int closestSum = nums[0] + nums[1] + nums[2];
-    for (int k = 0; k <= n - 3; k++)
+    for (int k = 0; k < n - 2; k++)
     {
         int i = k + 1;
         int j = n - 1;
