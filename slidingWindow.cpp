@@ -75,14 +75,41 @@ int minSubArrayLen(vector<int>& nums, int target){
     int j = 0;
     while(j < nums.size()){
         sum+=nums[j];
-        j++;
         while(sum >= target){
-            minLen = min(minLen, sum);
+            minLen = min(minLen, j-i+1);
             sum-=nums[i];
             i++;
         }
+        j++;
     }
     return minLen == INT_MAX ? 0 : minLen;
+}
+
+//gfg first negative integer in every window of size k
+vector<long long> printFirstNegativeInteger(long long int nums[], long long int n, long long int k) {
+    int i = 0;
+    int j = 0;
+    vector<long long> result;
+    queue<long long> q;
+    while(j < n){
+        if(nums[j] < 0){
+            q.push(nums[j]);
+        }
+        if(j-i+1 == k){
+            if(q.empty()){
+                result.push_back(0);
+            }
+            else{
+                result.push_back(q.front());
+                if(nums[i] == q.front()){
+                    q.pop();
+                }
+            }
+            i++;
+        }
+        j++;
+    }
+    return result;
 }
 
 //minimum window substring Leetcode 76
@@ -119,7 +146,24 @@ string minWindow(string s, string t){
     }
     return (windowSize == INT_MAX)? "" : s.substr(start, windowSize);
 }
-
+//contains duplicate II Leetcode 219
+bool containsNearbyDuplicate(vector<int>& nums, int k) {
+    int i = 0;
+    int j = 0;
+    unordered_set<int> st;
+    while(j < nums.size()){
+        if(st.find(nums[j]) != st.end()){
+            return true;
+        }
+        st.insert(nums[j]);
+        if(j-i+1 == k){
+            st.erase(nums[i]);
+            i++;
+        }
+        j++;
+    }
+    return false;
+}
 
 //Count subarrays with fixed bounds Leetcode 2444
 //smaller = min(minPosi, maxPosi)
@@ -167,7 +211,7 @@ int maxVowels(string s, int k){
         }
         if(j-i+1 == k){
             maxV = max(maxV, count);
-            if(isVowel(s[i])){
+            if(isVowel(s[i])){  
                 count--;
             }
             i++;
@@ -178,6 +222,7 @@ int maxVowels(string s, int k){
 }
 
 //K Radius Subarray Averages lc 2090
+//perfix sum/cummulative sum
 vector<int> getAverages(vector<int>& nums, int k){
     int n = nums.size();
     if(k == 0){
@@ -206,6 +251,30 @@ vector<int> getAverages(vector<int>& nums, int k){
         i++;
         r++;
         l++;
+    }
+    return result;
+}
+//sliding window k radius subarray averages
+vector<int> getAverages(vector<int>& nums, int k){
+    int n = nums.size();
+    if(k == 0){
+        return nums;
+    }
+    vector<int>result(n, -1);
+    if(n < 2*k+1){
+        return result;
+    }
+    int i = 0;
+    int j = 0;
+    long long window = 0;
+    while(j < n){
+        window+=nums[j];
+        if(j-i+1 == 2*k+1){
+            result[i+k] = window/(2*k+1);
+            window-=nums[i];
+            i++;
+        }
+        j++;
     }
     return result;
 }
